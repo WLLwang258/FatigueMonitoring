@@ -1,0 +1,47 @@
+name: env
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+  - conda-forge
+dependencies:
+  - click=8.0.0=py36ha15d459_0
+  - colorama=0.4.5=pyhd8ed1ab_0
+  - dlib=19.22.0=py36h9f2b841_0
+  - face_recognition=1.3.0=pyhd3deb0d_2
+  - face_recognition_models=0.3.0=pyh9f0ad1d_0
+  - freetype=2.12.1=h546665d_0
+  - intel-openmp=2022.1.0=h57928b3_3787
+  - jpeg=9e=h8ffe710_2
+  - lcms2=2.12=h2a16943_0
+  - lerc=3.0=h0e60522_0
+  - libblas=3.9.0=16_win64_mkl
+  - libcblas=3.9.0=16_win64_mkl
+  - libdeflate=1.10=h8ffe710_0
+  - liblapack=3.9.0=16_win64_mkl
+  - libpng=1.6.38=h19919ed_0
+  - libtiff=4.3.0=hc4061b1_4
+  - libzlib=1.2.13=hcfcfb64_4
+  - mkl=2022.2.1=h4060db9_19760
+  - numpy=1.19.5=py36h4b40d73_2
+  - olefile=0.46=pyh9f0ad1d_1
+  - openjpeg=2.5.0=hb211442_0
+  - pillow=8.3.2=py36h10c25d6_0
+  - pip=21.3.1=pyhd8ed1ab_0
+  - python=3.6.3=4
+  - python_abi=3.6=2_cp36m
+  - setuptools=58.0.4=py36ha15d459_2
+  - tbb=2021.7.0=h91493d7_0
+  - tk=8.6.12=h8ffe710_0
+  - ucrt=10.0.22621.0=h57928b3_0
+  - vc=14.3=h3d8a991_9
+  - vs2015_runtime=14.32.31332=h1d6e394_9
+  - wheel=0.37.1=pyhd8ed1ab_0
+  - xz=5.2.6=h8d14728_0
+  - zlib=1.2.13=hcfcfb64_4
+  - zstd=1.5.2=h7755175_4
+  - pip:
+    - opencv-contrib-python==3.4.2.17
+    - opencv-python==3.4.2.17
+prefix: C:\ProgramData\Anaconda3\envs\env
+
