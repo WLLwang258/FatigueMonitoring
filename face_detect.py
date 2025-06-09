@@ -1,10 +1,8 @@
-
 import dlib
 import cv2
-import numpy as np
 from constants import *
+from file_operations import FileOperations
 from utils import shape_to_np, get_eye_aspect_ratio
-
 
 def preprocess_roi(roi):
     """
@@ -33,6 +31,8 @@ def preprocess_frame(origin_frame, resize_width):
 
 class FaceDetect:
     def __init__(self, args):
+        self.file_operations = FileOperations()
+
         self.frame = None
         self.gray = None
         self.faces = None
@@ -41,6 +41,8 @@ class FaceDetect:
 
         self.blinks_counter = 0
         self.counter = 0
+        self.is_long_term_closed = False
+        self.counter_ = 0
 
         self.detector = dlib.get_frontal_face_detector()
         self.predictor = dlib.shape_predictor(args["predictor"])
@@ -92,11 +94,23 @@ class FaceDetect:
 
         if ear < EAR_THRESHOLD:
             self.counter += 1
+            if self.counter >= BLINKS_THRESHOLD:
+                self.is_long_term_closed = True
         else:
             if self.counter >= EAR_GAP_FRAMES:
                 self.blinks_counter += 1
             self.counter = 0
+
+            if self.is_long_term_closed:
+                self.counter_ += 1
+                if self.counter_ >= BLINKS_THRESHOLD:
+                    self.counter = 0
+                    self.file_operations.log_fatigue_recovery()
+                    self.is_long_term_closed = False
+
         cv2.putText(self.frame, "Blinks: {}".format(self.blinks_counter), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        cv2.putText(self.frame, "IsTired: {}".format(self.is_long_term_closed), (200, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        cv2.putText(self.frame, "press 'q' quit".format(self.is_long_term_closed), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
 
     def __video_detect(self, video_src):
@@ -111,9 +125,10 @@ class FaceDetect:
                 self.frame, self.gray = preprocess_frame(new_frame, VIDEO_RESIZE_WIDTH)
                 self.__detect_face_with_current_frame()
                 self.__detect_blinks()
+                if self.is_long_term_closed:
+                    self.file_operations.log_fatigue_detection("长期闭眼")
                 cv2.imshow("Video", self.frame)
-                key = cv2.waitKey(1) & 0xFF
-                if key == 27:
+                if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
         except FileNotFoundError as e:
             print(f"Error: {e}")
